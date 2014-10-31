@@ -61,7 +61,7 @@ var Database = function(resources) {
 
   var connect = function(callback) {
     // Connection URL
-    var url = 'mongodb://localhost:27017/myproject';
+    var url = process.env.MONGOHQ_URL;
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
       assert.equal(null, err);
