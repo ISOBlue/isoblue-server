@@ -35,15 +35,47 @@ describe('Isoblue server', function() {
         });
   });
 
-  it('Test POST to /data endpoint', function(done) {
+  it('Test POST to single message to /data endpoint', function(done) {
     var isodata = {
-      timestamp: '1414782625',
-      pgn: "pgn",
+      timestamp: new Date().getTime() / 1000,
+      pgn: "1245",
       src:"a",
       dst:"b",
       bus:1,
       data: "SomeDataToUpload"
     };
+
+    request
+        .post('/data/MacAddress')
+        .send(isodata)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          done();
+        });
+  });
+
+  it('Test POST to multiple messages to /data endpoint', function(done) {
+    var isodata = [
+    {
+      timestamp: new Date().getTime() / 1000,
+      pgn: "6789",
+      src:"a",
+      dst:"b",
+      bus:1,
+      data: "SomeDataToUpload"
+    },
+    {
+      timestamp: new Date().getTime() / 1000,
+      pgn: "9123",
+      src:"a",
+      dst:"b",
+      bus:1,
+      data: "SomeDataToUpload"
+    }
+    ];
 
     request
         .post('/data/MacAddress')
