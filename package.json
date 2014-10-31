@@ -1,0 +1,44 @@
+{
+  "name": "isoblue-server",
+  "version": "0.0.1",
+  "description": "A server for ISOBlues to upload json PGN data to.",
+  "keywords": [
+    "ISOBlue",
+    "PGN"
+  ],
+  "homepage": "https://github.com/ISOBlue/isoblue-server",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "private": true,
+  "scripts": {
+    "test": "mocha tests/*.js",
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ISOBlue/isoblue-server.git"
+  },
+  "dependencies": {
+    "mongodb": "^2.0",
+    "body-parser": "^1.9.1",
+    "express": "4.x",
+    "method-override": "2.x",
+    "errorhandler": "^1.2.2",
+    "morgan": "^1.4.1"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "supertest": "*",
+    "debug": "*",
+    "formidable": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "cyrus"
+}
