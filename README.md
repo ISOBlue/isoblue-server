@@ -3,7 +3,7 @@ isoblue-server
 
 Overview
 --------
-isoblue-server is a test server that ISOBlue can send data to. It stores data in a mongo database at the url defined in enviroment variable 'MONGO_URL'. If 'MONGO_URL' is not set, then it defaults to 'mongodb://localhost:27017/isoblue'.
+isoblue-server is a test server that ISOBlue can send data to. It stores data in a mongo database at the url defined in environment variable 'MONGO_URL'. If 'MONGO_URL' is not set, then it defaults to 'mongodb://localhost:27017/isoblue'.
 
 Endpoints
 -----
@@ -16,8 +16,8 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  url:"http://www.example.com/data/1234",
-  pgns:[1234,5678,9123]
+  "url":"http://www.example.com/data/1234",
+  "pgns":[1234,5678,9123]
 }
 ```
 
@@ -27,12 +27,12 @@ Data the ISOBlue sends to the POST url should look like the following:
 
 ```json
 {
-  timestamp: '1414782625',
-  pgn: "1234",
-  src:"a",
-  dst:"b",
-  bus:1,
-  data: "SomeDataToUpload"
+  "timestamp": "1414782625",
+  "pgn": "1234",
+  "src":"a",
+  "dst":"b",
+  "bus":1,
+  "data": "SomeDataToUpload"
 }
 ```
 
@@ -41,28 +41,28 @@ Or if multiple messages are batched together:
 ```json
 [
 {
-  timestamp: '1414782625',
-  pgn: "1234",
-  src:"a",
-  dst:"b",
-  bus:1,
-  data: "SomeDataToUpload"
+  "timestamp": "1414782625",
+  "pgn": "1234",
+  "src":"a",
+  "dst":"b",
+  "bus":1,
+  "data": "SomeDataToUpload"
 },
 {
-  timestamp: '1414782625',
-  pgn: "5678",
-  src:"a",
-  dst:"b",
-  bus:1,
-  data: "MoreData"
+  "timestamp": "1414782625",
+  "pgn": "5678",
+  "src":"a",
+  "dst":"b",
+  "bus":1,
+  "data": "Moredata"
 },
 {
-  timestamp: '1414782625',
-  pgn: "9123",
-  src:"a",
-  dst:"b",
-  bus:1,
-  data: "LotsOfData"
+  "timestamp": "1414782625",
+  "pgn": "9123",
+  "src":"a",
+  "dst":"b",
+  "bus":1,
+  "data": "LotsOfdata
 },
 ]
 ```
