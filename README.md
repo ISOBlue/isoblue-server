@@ -67,6 +67,8 @@ Or if multiple messages are batched together:
 ]
 ```
 
+To retrieve data you do a GET request to the same URL the ISOBlue is POSTing data to. All data is returned. There is no method to filter the response at this time.
+
 Usage
 -----
 Make sure mongo is running. If on your local machine:
@@ -75,5 +77,11 @@ Make sure mongo is running. If on your local machine:
 Run the server:
 - node server.js
 
+Coming soon
+-----
+- Response filtering by timestamp and PGN.
+- Security
+- A key added in the config response to specify how many messages to batch.
+- Accept parameters in the GET request to /config to tell what API version the device supports.
 
 
