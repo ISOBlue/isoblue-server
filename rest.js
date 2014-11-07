@@ -15,23 +15,21 @@
 
 'use strict';
 
-var REST = function() {
+var REST = (function() {
 
   var express = require('express');
   var _config = express.Router();
   var _data = express.Router();
   var database = require('./database');
 
-  var postId = 0;
-
   //Get the url and pgns to post
   _config.get('/*', function(req, res, next) {
     console.log('Getting config for udid: ' + req.path.substr(1));
     if(req.path.length > 1){
       var toSend = {
-        url: req.protocol+"://"+ req.get('host') + "/data" + req.path,
+        url: req.protocol+'://'+ req.get('host') + '/data' + req.path,
         pgns:[1234,5678,9123]
-      }
+      };
       res.json(toSend);
     } else {
       res.sendStatus(400);
@@ -54,9 +52,9 @@ var REST = function() {
       }
     }
 
-    if(view != null){
+    if(view !== null){
       //TODO process view syntax
-      if(view['$each'] != undefined){
+      if(view['$each'] !== undefined){
         view = view['$each'];
       } else {
         res.sendStatus(400);
@@ -73,7 +71,8 @@ var REST = function() {
 
   //Post resource
   _data.post('/*', function(req, res, next) {
-    console.log('Post recieved from ' + req.path.substr(1) + ' with data: ' + JSON.stringify(req.body));
+    console.log('Post recieved from ' + req.path.substr(1) + 
+      ' with data: ' + JSON.stringify(req.body));
 
     var udid = req.path.substr(1); //Used as collection
     database.insert(udid, req.body);
@@ -84,6 +83,6 @@ var REST = function() {
     config: _config,
     data: _data
   };
-}();
+}());
 
 module.exports = REST;

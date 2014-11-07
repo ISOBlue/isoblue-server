@@ -15,9 +15,8 @@
 
 'use strict';
 
-var Database = function(resources) {
-  var express = require('express');
-  var MongoClient = require('mongodb').MongoClient
+var Database = (function() {
+  var MongoClient = require('mongodb').MongoClient;
   var assert = require('assert');
 
   var _get = function(collectionName, find, callback) {
@@ -26,13 +25,13 @@ var Database = function(resources) {
       // Get the documents collection
       var collection = db.collection(collectionName);
 
-      if(find == null) {
+      if(find === null) {
         find = {};
       }
       // Find some documents
       collection.find(find).toArray(function(err, docs) {
         assert.equal(err, null);
-        console.log("Found "+ docs.length + " records");
+        console.log('Found '+ docs.length + ' records');
         db.close();
         callback(docs);
       }); 
@@ -50,14 +49,14 @@ var Database = function(resources) {
       // Insert some documents
       collection.insert(documents, function(err, records) {
         assert.equal(err, null);
-        console.log("Inserted documents into the document collection");
+        console.log('Inserted documents into the document collection');
         db.close(); 
         if (typeof(callback) == 'function') {
-          callback(result);
+          callback(records);
         }
       });
     });
-  }
+  };
 
   var connect = function(callback) {
     // Connection URL
@@ -65,16 +64,16 @@ var Database = function(resources) {
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
       assert.equal(null, err);
-      console.log("Connected correctly to server");
+      console.log('Connected correctly to server');
       callback(db);
     });
-  }
+  };
 
   return {
     insert: _insert,
     get: _get,
     delete: _delete
   };
-}();
+}());
 
 module.exports = Database;
