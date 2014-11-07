@@ -27,13 +27,15 @@ var REST = function() {
   //Get the resource list
   _config.get('/*', function(req, res, next) {
     console.log('Getting resource from udid: ' + req.path.substr(1));
-
-    var toSend = {
-      url:'http://www.cyrusbowman.com/data/'+req.path.substr(1),
-      pgns:[1234,5678,9123]
+    if(req.path.length > 1){
+      var toSend = {
+        url: req.protocol+"://"+ req.get('host') + "/data" + req.path,
+        pgns:[1234,5678,9123]
+      }
+      res.json(toSend);
+    } else {
+      res.sendStatus(400);
     }
-
-    res.json(toSend);
   });
 
   //Get the resource list
