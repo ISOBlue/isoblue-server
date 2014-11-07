@@ -62,7 +62,7 @@ Or if multiple messages are batched together:
   "src":"a",
   "dst":"b",
   "bus":1,
-  "data": "LotsOfdata
+  "data": "LotsOfdata"
 }
 ]
 ```
