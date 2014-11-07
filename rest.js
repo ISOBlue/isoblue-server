@@ -24,9 +24,9 @@ var REST = function() {
 
   var postId = 0;
 
-  //Get the resource list
+  //Get the url and pgns to post
   _config.get('/*', function(req, res, next) {
-    console.log('Getting resource from udid: ' + req.path.substr(1));
+    console.log('Getting config for udid: ' + req.path.substr(1));
     if(req.path.length > 1){
       var toSend = {
         url: req.protocol+"://"+ req.get('host') + "/data" + req.path,
@@ -38,12 +38,37 @@ var REST = function() {
     }
   });
 
-  //Get the resource list
+  //Get the posted data
   _data.get('/*', function(req, res, next) {
     console.log('Request for data with udid: ' + req.path.substr(1));
-    database.get(req.path.substr(1), null, function(docs){
+
+    console.log(req.query);
+
+    var view = null;
+    if(typeof req.query.view != 'undefined'){
+      try {
+        view = JSON.parse(req.query.view);
+      } catch(exception) {
+        res.sendStatus(400);
+        return;
+      }
+    }
+
+    if(view != null){
+      //TODO process view syntax
+      if(view['$each'] != undefined){
+        view = view['$each'];
+      } else {
+        res.sendStatus(400);
+        return;
+      }
+      console.log(JSON.stringify(view));
+    }
+
+    database.get(req.path.substr(1), view, function(docs){
       res.json(docs);
     });
+
   });
 
   //Post resource

@@ -30,7 +30,6 @@ describe('Isoblue server', function() {
             return done(err);
           }
           res.body.url.should.be.a('string');
-          console.log(res.body);
           done();
         });
   });
@@ -97,7 +96,19 @@ describe('Isoblue server', function() {
           if (err) {
             return done(err);
           }
-          console.log(res.body);
+          done();
+        });
+  });
+
+  it('Test GET on /data endpoint with view query filtering timestamp', function(done) {
+    request
+        .get('/data/MacAddress')
+        .query({ view: '{"$each": {"timestamp": { "$gt": '+ ((new Date().getTime() / 1000) - 10) +' } } }' })
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
           done();
         });
   });
