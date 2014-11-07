@@ -7,7 +7,7 @@ isoblue-server is a test server that ISOBlue can send data to. It stores data in
 
 Endpoints
 -----
-ISOBlue should do a GET request to <url>/config/<udid> where <udid> is a universal identifier for that ISOBlue. 
+ISOBlue should do a GET request to url/config/udid where udid is a universal identifier for that ISOBlue. 
 
 The response will be the following:
 
