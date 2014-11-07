@@ -27,7 +27,7 @@ Data the ISOBlue sends to the POST url should look like the following:
 
 ```json
 {
-  "timestamp": "1414782625",
+  "timestamp": 1414782625.123,
   "pgn": "1234",
   "src":"a",
   "dst":"b",
@@ -41,7 +41,7 @@ Or if multiple messages are batched together:
 ```json
 [
 {
-  "timestamp": "1414782625",
+  "timestamp": 1414782625.124,
   "pgn": "1234",
   "src":"a",
   "dst":"b",
@@ -49,7 +49,7 @@ Or if multiple messages are batched together:
   "data": "SomeDataToUpload"
 },
 {
-  "timestamp": "1414782625",
+  "timestamp": 1414782625.125,
   "pgn": "5678",
   "src":"a",
   "dst":"b",
@@ -57,7 +57,7 @@ Or if multiple messages are batched together:
   "data": "Moredata"
 },
 {
-  "timestamp": "1414782625",
+  "timestamp": 1414782625.126,
   "pgn": "9123",
   "src":"a",
   "dst":"b",
