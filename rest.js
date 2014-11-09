@@ -135,7 +135,7 @@ var REST = (function() {
     if(Object.keys(streams).length > 0){
       for(var stream in streams){
         //Save messages from each stream in database
-        for(msg in streams.stream){
+        for(msg in streams[stream]){
           //Add keys to each 
           streams[stream][msg].machine = udid;
           //TODO check if this stream type exists, if not add another to db
