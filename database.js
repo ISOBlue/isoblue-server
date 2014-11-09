@@ -18,24 +18,30 @@
 var Database = (function() {
   var MongoClient = require('mongodb').MongoClient;
   var assert = require('assert');
+  var db;
+
+  var _init = function(callback){
+    // Initialize db connection once, reuse it with requests.
+    connect(function(database){
+      db = database;
+      callback();
+    });
+  };
 
   var _get = function(collectionName, find, callback) {
     //Returns resource with _id
-    connect(function(db){
-      // Get the documents collection
-      var collection = db.collection(collectionName);
+    // Get the documents collection
+    var collection = db.collection(collectionName);
 
-      if(find === null) {
-        find = {};
-      }
-      // Find some documents
-      collection.find(find).toArray(function(err, docs) {
-        assert.equal(err, null);
-        console.log('Found '+ docs.length + ' records');
-        db.close();
-        callback(docs);
-      }); 
-    });
+    if(find === null) {
+      find = {};
+    }
+    // Find some documents
+    collection.find(find).toArray(function(err, docs) {
+      assert.equal(err, null);
+      console.log('Found '+ docs.length + ' records');
+      callback(docs);
+    }); 
   };
 
   var _delete = function(_id, callback) {
@@ -43,18 +49,15 @@ var Database = (function() {
   };
 
   var _insert = function(collectionName, documents, callback) {
-    connect(function(db){
-      // Get the documents collection
-      var collection = db.collection(collectionName);
-      // Insert some documents
-      collection.insert(documents, function(err, records) {
-        assert.equal(err, null);
-        console.log('Inserted documents into the document collection');
-        db.close(); 
-        if (typeof(callback) == 'function') {
-          callback(records);
-        }
-      });
+    // Get the documents collection
+    var collection = db.collection(collectionName);
+    // Insert some documents
+    collection.insert(documents, function(err, records) {
+      assert.equal(err, null);
+      console.log('Inserted documents into the document collection');
+      if (typeof(callback) == 'function') {
+        callback(records);
+      }
     });
   };
 
@@ -62,17 +65,18 @@ var Database = (function() {
     // Connection URL
     var url =  process.env.MONGO_URL || 'mongodb://localhost:27017/isoblue';
     // Use connect method to connect to the Server
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url, function(err, database) {
       assert.equal(null, err);
       console.log('Connected correctly to server');
-      callback(db);
+      callback(database);
     });
   };
 
   return {
     insert: _insert,
     get: _get,
-    delete: _delete
+    delete: _delete,
+    init: _init
   };
 }());
 

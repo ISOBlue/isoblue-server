@@ -35,13 +35,14 @@ describe('Isoblue server', function() {
   });
 
   it('Test POST to single message to /data endpoint', function(done) {
+    var theTime = new Date().getTime() / 1000;
     var isodata = {
-      timestamp: new Date().getTime() / 1000,
-      pgn: "1245",
+      timestamp: 123,
+      pgn: "8613",
       src:"a",
       dst:"b",
       bus:1,
-      data: "SomeDataToUpload"
+      data: "cccccccc"
     };
 
     request
@@ -57,22 +58,24 @@ describe('Isoblue server', function() {
   });
 
   it('Test POST to multiple messages to /data endpoint', function(done) {
+    var theTime = new Date().getTime() / 1000;
+
     var isodata = [
     {
-      timestamp: new Date().getTime() / 1000,
-      pgn: "6789",
+      timestamp: Math.floor(theTime).toString(16)  + "." +  Math.floor((theTime % 1)*1000000).toString(16),
+      pgn: "5BA0",
       src:"a",
       dst:"b",
       bus:1,
-      data: "SomeDataToUpload"
+      data: "aaaa"
     },
     {
-      timestamp: new Date().getTime() / 1000,
-      pgn: "9123",
+      timestamp: Math.floor(theTime).toString(16)  + "." +  Math.floor((theTime % 1)*1000000).toString(16),
+      pgn: "15665",
       src:"a",
       dst:"b",
       bus:1,
-      data: "SomeDataToUpload"
+      data: "bbbbbbbb"
     }
     ];
 

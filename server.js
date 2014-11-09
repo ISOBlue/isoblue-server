@@ -35,9 +35,13 @@ var rest = require('./rest');
 app.use('/config', rest.config);
 app.use('/data', rest.data);
 
-app.listen(app.get('port'), function() {
-  console.log('Example API listening on port ' + app.get('port') + 
-  	', running in ' + app.settings.env + ' mode.');
+rest.init(function(){
+	//TODO should probably have an error argument
+
+	app.listen(app.get('port'), function() {
+	  console.log('Example API listening on port ' + app.get('port') + 
+	  	', running in ' + app.settings.env + ' mode.');
+	});
 });
 
 if ('development' == env) {

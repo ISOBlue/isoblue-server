@@ -1,0 +1,23 @@
+{	
+	"test_yield": {
+		"pgn": 23456,
+		"low": 4,
+		"high": 5,
+		"mul": 0.06,
+		"add": -9
+	},
+	"test_moisture": {
+		"pgn": 87653,
+		"low": 2,
+		"high": 5,
+		"mul": 1,
+		"add": 9
+	},
+	"test_hours": {
+		"pgn": 34323,
+		"low": 0,
+		"high": 1,
+		"mul": 0.03,
+		"add": 0
+	}
+}
