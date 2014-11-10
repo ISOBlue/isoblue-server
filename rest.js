@@ -92,58 +92,61 @@ var REST = (function() {
 
     var udid = req.path.substr(1); //Used as collection
 
-    //Insert into ISOBus database
     var messages = req.body;
-    database.insert(udid, messages);
+    //Insert messages into ISOBus database
+    database.insert(udid, messages, function(inserted){
+      //Success now save into streamData collection
 
-    //Parse messages with our pgnConfig file
-    //Convert messages to array if it is just one message
-    if(!(req.body instanceof Array)) {
-      //Convert single message to an array
-      messages = [messages];
-    }
+      //Parse messages with our pgnConfig file
+      //Convert messages to array if it is just one message
+      if(!(req.body instanceof Array)) {
+        //Convert single message to an array
+        messages = [messages];
+      }
 
-    console.log('Messages:' + JSON.stringify(messages));
+      console.log('Messages:' + JSON.stringify(messages));
 
-    for(var msg in messages){
-      if(typeof messages[msg].timestamp != 'number'){
-        //Convert timestamp from hex.hex to decimal.decimal
-        var decPos = messages[msg].timestamp.indexOf('.');
-        if (decPos == -1) {
-          messages[msg].timestamp = parseInt(messages[msg].timestamp,16);
-        } else {
-          var beforeD = messages[msg].timestamp.substr(0,decPos);
-          var afterD = null;
-          if (messages[msg].timestamp.length > (decPos + 1)) {
-            afterD = messages[msg].timestamp.substr(decPos+1);
-          }
-          messages[msg].timestamp = parseInt(beforeD,16);
-          if(afterD !== null){
-            messages[msg].timestamp = messages[msg].timestamp + (parseInt(afterD,16) / 1000000);
+      for(var msg in messages){
+        if(typeof messages[msg].timestamp != 'number'){
+          //Convert timestamp from hex.hex to decimal.decimal
+          var decPos = messages[msg].timestamp.indexOf('.');
+          if (decPos == -1) {
+            messages[msg].timestamp = parseInt(messages[msg].timestamp,16);
+          } else {
+            var beforeD = messages[msg].timestamp.substr(0,decPos);
+            var afterD = null;
+            if (messages[msg].timestamp.length > (decPos + 1)) {
+              afterD = messages[msg].timestamp.substr(decPos+1);
+            }
+            messages[msg].timestamp = parseInt(beforeD,16);
+            if(afterD !== null){
+              messages[msg].timestamp = messages[msg].timestamp + (parseInt(afterD,16) / 1000000);
+            }
           }
         }
+        //Convert pgn from hex to decimal
+        messages[msg].pgn = parseInt(messages[msg].pgn,16);
+        //Convert data from hex string to byte array
+        messages[msg].data = isobusParser.getBytes(messages[msg].data);
       }
-      //Convert pgn from hex to decimal
-      messages[msg].pgn = parseInt(messages[msg].pgn,16);
-      //Convert data from hex string to byte array
-      messages[msg].data = isobusParser.getBytes(messages[msg].data);
-    }
 
-    var streams = isobusParser.parse(messages);
+      var streams = isobusParser.parse(messages);
 
-    console.log('Streams:' + JSON.stringify(streams));
-    if(Object.keys(streams).length > 0){
-      for(var stream in streams){
-        //Save messages from each stream in database
-        for(msg in streams[stream]){
-          //Add keys to each 
-          streams[stream][msg].machine = udid;
-          //TODO check if this stream type exists, if not add another to db
-          streams[stream][msg].stream = streamTypes[stream];
+      console.log('Streams:' + JSON.stringify(streams));
+      if(Object.keys(streams).length > 0){
+        for(var stream in streams){
+          //Save messages from each stream in database
+          for(msg in streams[stream]){
+            //Add keys to each 
+            streams[stream][msg].machine = udid;
+            //TODO check if this stream type exists, if not add another to db
+            streams[stream][msg].stream = streamTypes[stream];
+          }
+          database.insert('streamData', streams[stream]);
         }
-        database.insert('streamData', streams[stream]);
       }
-    }
+    });
+
     res.sendStatus(200);
   });
 
